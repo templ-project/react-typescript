@@ -1,46 +1,169 @@
-# Getting Started with Create React App
+# Templ Node.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- https://hits.seeyoufarm.com/ -->
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ftempl-project%2Fnode&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/templ-project/react-typescript/issues)
 
-## Available Scripts
+![JSCPD](.jscpd/jscpd-badge.svg?raw=true)
 
-In the project directory, you can run:
+<!-- [![TravisCI](https://travis-ci.org/templ-project/react-typescript.svg?branch=master)](https://travis-ci.org/templ-project/react-typescript) -->
+<!-- CI Badges -->
+<!-- [![CircleCI](https://circleci.com/gh/templ-project/react-typescript.svg?style=shield)](https://circleci.com/gh/templ-project/react-typescript) -->
 
-### `yarn start`
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=templ-project_react-typescript&metric=alert_status)](https://sonarcloud.io/dashboard?id=templ-project_react-typescript)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=templ-project_react-typescript&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=templ-project_react-typescript)
+[![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=templ-project_react-typescript&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=templ-project_react-typescript)
+[![SonarCloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=templ-project_react-typescript&metric=vulnerabilities)](https://sonarcloud.io/component_measures/metric/security_rating/list?id=templ-project_react-typescript)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<!-- Donation Badges -->
+[![Donate to this project using Patreon](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/dragoscirjan)
+[![Donate to this project using Paypal](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QBP6DEBJDEMV2&source=url)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<img alt="JavaScript Logo" src="https://github.com/templ-project/react-typescript/blob/main/typescript.svg?raw=true" width="20%" align="right" />
 
-### `yarn test`
+<!-- Project Description Starts Here -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> *Any fool can write code that a computer can understand. Good programmers write code that humans can understand.* – Martin Fowler
 
-### `yarn build`
+> **node** is a template project, designed by [Templ Project](http://templ-project.github.io) for writing [Node.js](https://nodejs.org/en/) modules.
+>
+> **node** implements:
+>
+> - [jscpd](https://github.com/kucherenko/jscpd), [dependency-cruiser](https://github.com/sverweij/dependency-cruiser), [sonarqube](https://www.sonarqube.org/) for code analisys.
+> - [prettier](https://prettier.io/) for code formatting
+> - [eslint](https://eslint.org/) (using either default rules or) for linting. For [airbnb](https://github.com/airbnb) see [Using Airbnb](manual/using-using-esling-airbnb.md)
+> - [mocha](https://mochajs.org/) for unit testing. For [jest](https://jestjs.io/) see [Using Jest](manual/using-jest.md).
+>
+> By default, this implementation uses [npm](https://www.npmjs.com/), but you can easily change it to [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.js.org/) or any other package manager.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- Project Description Ends Here -->
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<!--
+Insert Table of Contents Here
+This can be done using [AlanWalk.markdown-toc](https://marketplace.visualstudio.com/items?itemName=AlanWalk.markdown-toc) plugin, 
+which is also included in 
+[itmcdev.generic-extension-pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.generic-extension-pack) extension pack.
+-->
+<!-- TOC -->
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [Templ Node.js](#templ-nodejs)
+  - [Getting Started](#getting-started)
+    - [Prerequisites / Dependencies](#prerequisites--dependencies)
+        - [For Windows](#for-windows)
+        - [For Linux/Unix/OSX](#for-linuxunixosx)
+    - [Installation](#installation)
+    - [Development](#development)
+      - [Requirements](#requirements)
+    - [Testing](#testing)
+      - [Single Tests](#single-tests)
+    - [Deployment](#deployment)
+  - [Authors](#authors)
+  - [License](#license)
 
-### `yarn eject`
+<!-- /TOC -->
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Getting Started
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites / Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<!-- What things you need to install the software and how to install them (based on each OS type). -->
+##### For Windows
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Please install [git-scm](https://git-scm.com/download/win) tool
 
-## Learn More
+##### For Linux/Unix/OSX
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Please install `git`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# i.e debian
+sudo apt-get install git -y
+# i.e mac OS
+brew install git
+```
+
+<!-- #### Known Issues / Troubleshooting
+
+Describe a list of known issues, and how to bypass them. -->
+
+### Installation
+
+<!-- 
+A step by step series of examples that tell you how to get a development env running 
+Use sub-headers if necesary
+-->
+
+```bash
+git clone https://github.com/templ-project/react-typescript your_project
+cd your_project
+rm -rf .git
+git init
+git add remote origin https://url/to/your/project/repository
+git add .
+git commit -am "init"
+git push origin master
+npm install
+# yarn install
+# pnpm instal
+```
+
+### Development
+
+<!-- Explain any development process for the project, if necesary -->
+#### Requirements
+
+- Please install [NodeJs](https://nodejs.org/en/). We support version 10.x and above.
+- Please instal a JavaScript/TypeScript IDE
+  - [Visual Studio Code](https://code.visualstudio.com/) with [ITMCDev Babel Extension Pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.node-babel-extension-pack) or [ITMCDev TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=itmcdev.react-typescript-extension-pack)
+  - [Jetbrains WebStorm](https://www.jetbrains.com/webstorm/)
+  - [Vim](https://www.vim.org/) with [neoclide/coc.nvim](https://github.com/neoclide/coc.nvim) and [HerringtonDarkholme/yats.vim](https://github.com/HerringtonDarkholme/yats.vim) extensions.
+  - Any other IDE you trust.
+
+### Testing
+
+<!-- Explain how to run the automated tests for this system -->
+
+Run unit tests using `npm run test`.
+
+Testing is currently set to use unittest.
+
+#### Single Tests
+
+Run single unit tests file, by calling `make test:single -- test/path/to/file.test.js`
+
+```bash
+make test:single -- test/path/to/index.test.js
+```
+
+
+### Deployment
+
+<!-- Add additional notes about how to deploy this on a live system -->
+
+Please check [release-it](https://www.npmjs.com/package/release-it) for making releases to [npmjs.com](https://www.npmjs.com/) or any other repository tool, then run:
+
+```bash
+npm run release
+```
+
+## Authors
+
+* [Dragos Cirjan](mailto:dragos.cirjan@gmail.com) - Initial work
+
+<!-- ## Issues / Support
+
+Add a set of links to the [issues](/templ-project/react-typescript/issues) page/website, so people can know where to add issues/bugs or ask for support. -->
+
+## License
+
+<!-- Add licence fit for the project -->
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+<!-- ## Changelog
+
+Small changelog history. The rest should be added to [CHANGELOG.md](CHANGELOG.md).
+
+See here a template for changelogs: https://keepachangelog.com/en/1.0.0/
+
+Also see this tool for automatically generating them: https://www.npmjs.com/package/changelog -->
