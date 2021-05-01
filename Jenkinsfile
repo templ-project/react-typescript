@@ -42,20 +42,17 @@ pipeline {
       }
     }
 
-    stage('Code ...') {
-      steps {
-        script {
-          def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${it}" : generateStages(it)]
-          }
 
-          // executeTests(NODE_VERSIONS)
-          parallel {
-            stage('Test On Windows') {
-              steps {
-                echo "test"
-              }
-            }
+    def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+      ["${it}" : generateStages(it)]
+    }
+
+    stage('Code ...') {
+      // executeTests(NODE_VERSIONS)
+      parallel {
+        stage('Test On Windows') {
+          steps {
+            echo "test"
           }
         }
       }
