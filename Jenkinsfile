@@ -7,19 +7,26 @@ def generateStages(String version) {
   //     // nvm.runSh "npm run ca;", version
   //   }
   // }
-  return {
-    node {
-      stage("Node.js ${version}.x") {
-        stages {
-          stage ("Code Analysis") {
-            script {
-              echo "test"
-            }
-          }
-        }
+  return stage ("Node.js ${version}.x") {
+    steps {
+      script {
+        echo "test"
       }
     }
   }
+  // {
+  //   node {
+  //     stage("Node.js ${version}.x") {
+  //       stages {
+  //         stage ("Code Analysis") {
+  //           script {
+  //             echo "test"
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 def modules = [:]
@@ -55,13 +62,14 @@ pipeline {
 
     stage('Code ...') {
       // executeTests(NODE_VERSIONS)
-      parallel {
-        stage('Test On Windows') {
-          steps {
-            echo "test"
-          }
-        }
-      }
+      parallel parallelStagesMap
+      // {
+      //   stage('Test On Windows') {
+      //     steps {
+      //       echo "test"
+      //     }
+      //   }
+      // }
     }
 
     // stage('Code Analysis') {
