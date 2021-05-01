@@ -1,38 +1,19 @@
 @Library('my-jenkins-shared') _
 
 def generateStages(String version) {
-  // return stage("Code Analysis (${version}.x)") {
-  //   steps {
-  //     echo "npm run ca; ${version}"
-  //     // nvm.runSh "npm run ca;", version
-  //   }
-  // }
-  return {
-    node {
-      stage("Build ${version}") {
-        stages {
-          stage ('Test') {
-            steps {
-              echo 'test'
-            }
-          }
-        }
-      }
-    }
-  }
-  // {
+  // return {
   //   node {
-  //     stage("Node.js ${version}.x") {
-  //       stages {
-  //         stage ("Code Analysis") {
-  //           script {
-  //             echo "test"
-  //           }
-  //         }
-  //       }
+  //     stage("Build ${version}") {
+  //       echo 'test'
   //     }
   //   }
   // }
+
+  return {
+    stage("Build ${version}") {
+      echo 'test'
+    }
+  }
 }
 
 def modules = [:]
