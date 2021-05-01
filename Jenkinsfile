@@ -3,7 +3,7 @@
 def generateStages(String version, String wksp) {
   return {
     node {
-      customWorkspace "${wksp}_${version}"}
+      customWorkspace "${wksp}_${version}"
 
       stage("Code Analysis ${version}") {
         // echo "prev workspace: ${wksp}"
