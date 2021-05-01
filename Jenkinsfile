@@ -33,24 +33,7 @@ pipeline {
 
     stage('Code') {
       steps {
-        env.NODE_VERSIONS.split(' ').each { version ->
-          initName = "Init v${version}.x"
-
-          script {
-            stage(initName) {
-              steps {
-                script {
-                  sh """
-                    nvm --version || . ~/.bashrc;
-                    set -ex;
-                    rm -rf ~/.nvm/versions/node/*
-                    nvm install \$version;
-                    """
-                }
-              }
-            }
-          }
-        }
+        executeTests()
       }
     }
 
@@ -157,6 +140,27 @@ pipeline {
     success {
       script {
         telegram.sendStatusOk('jk_pipeline_report_to_telegram_token','jk_pipeline_report_to_telegram_chatId')
+      }
+    }
+  }
+}
+
+void executeTests() {
+  env.NODE_VERSIONS.split(' ').each { version ->
+    stageInitName = "Init v${version}.x"
+
+    script {
+      stage(stageInitName) {
+        steps {
+          script {
+            sh """
+              nvm --version || . ~/.bashrc;
+              set -ex;
+              rm -rf ~/.nvm/versions/node/*
+              nvm install \$version;
+              """
+          }
+        }
       }
     }
   }
