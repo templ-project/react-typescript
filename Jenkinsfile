@@ -20,13 +20,13 @@ pipeline {
       }
     }
 
-    stage('Init') {
-      steps {
-        script {
-          nvm.runSh 'npm i', env.NODE_VERSION_DEFAULT
-        }
-      }
-    }
+    // stage('Init') {
+    //   steps {
+    //     script {
+    //       nvm.runSh 'npm i', env.NODE_VERSION_DEFAULT
+    //     }
+    //   }
+    // }
 
     stage('Code ...') {
       steps {
@@ -168,11 +168,15 @@ def generateStages(String version, String wksp) {
   //   }
   // }
 
-  return {
-    stage("Build ${version}") {
-      steps {
-        echo 'test'
-      }
+  // return {
+  //   stage("Build ${version}") {
+  //     echo 'test'
+  //   }
+  // }
+
+  return stage("Build ${version}") {
+    steps {
+      echo 'test'
     }
   }
 
