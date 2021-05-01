@@ -69,7 +69,7 @@ pipeline {
         nvm.runSh "npm run test", params.NODE_VERSION
       }
     }
-    stage("Code Docs ${version}") {
+    stage("Code Docs") {
       steps {
         script {
           if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
@@ -80,7 +80,7 @@ pipeline {
         }
       }
     }
-    stage("Code Build ${version}") {
+    stage("Code Build") {
       steps {
         script {
           nvm.runSh "npm run build", params.NODE_VERSION
