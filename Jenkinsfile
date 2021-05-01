@@ -38,7 +38,9 @@ pipeline {
     }
     stage("Code Analysis") {
       steps {
-        nvm.runSh "npm run ca", params.NODE_VERSION
+        script {
+          nvm.runSh "npm run ca", params.NODE_VERSION
+        }
       }
     }
     stage("Code Sonar") {
@@ -54,12 +56,7 @@ pipeline {
               string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
               string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
             ]) {
-              sh """
-                . ~/.bashrc > /dev/null;
-                set -ex;
-                nvm use ${NODE_VERSION_DEFAULT}; \\
-                npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-                """
+              nvm.runSh "npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN}", params.NODE_VERSION
             }
           } else {
             echo "skip"
@@ -85,7 +82,9 @@ pipeline {
     }
     stage("Code Build ${version}") {
       steps {
-        nvm.runSh "npm run build", params.NODE_VERSION
+        script {
+          nvm.runSh "npm run build", params.NODE_VERSION
+        }
       }
     }
   }
