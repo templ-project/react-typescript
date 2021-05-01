@@ -66,7 +66,9 @@ pipeline {
     // }
     stage("Code UnitTest") {
       steps {
-        nvm.runSh "npm run test", params.NODE_VERSION
+        script {
+          nvm.runSh "npm run test", params.NODE_VERSION
+        }
       }
     }
     stage("Code Docs") {
