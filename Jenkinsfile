@@ -9,6 +9,7 @@ pipeline {
   environment {
     // NODE_VERSIONS = "10 12 13 14 15 16"
     NODE_VERSION_DEFAULT = "14"
+    RUN_SONAR_SCANNER = 0
   }
 
   parameters {
@@ -40,33 +41,52 @@ pipeline {
         nvm.runSh "npm run ca", params.NODE_VERSION
       }
     }
-    if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
-      // stage("Code Sonar") {
-      //   if (version == '14') {
-      //     withCredentials([
-      //       string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-      //       string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-      //     ]) {
-      //       sh """
-      //         . ~/.bashrc > /dev/null;
-      //         set -ex;
-      //         nvm use ${NODE_VERSION_DEFAULT}; \\
-      //         npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-      //         """
-      //     }
-      //   }
-      // }
+    stage("Code Sonar") {
+      steps {
+        when {
+          anyOf {
+            env.RUN_SONAR_SCANNER 1
+          }
+        }
+        script {
+          if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
+            withCredentials([
+              string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+              string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+            ]) {
+              sh """
+                . ~/.bashrc > /dev/null;
+                set -ex;
+                nvm use ${NODE_VERSION_DEFAULT}; \\
+                npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+                """
+            }
+          } else {
+            echo "skip"
+          }
+        }
+      }
     }
     stage("Code UnitTest") {
-      nvm.runSh "npm run test", params.NODE_VERSION
+      steps {
+        nvm.runSh "npm run test", params.NODE_VERSION
+      }
     }
-    if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
-      stage("Code Docs ${version}") {
-        nvm.runSh "npm run docs", params.NODE_VERSION
+    stage("Code Docs ${version}") {
+      steps {
+        script {
+          if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
+            nvm.runSh "npm run docs", params.NODE_VERSION
+          } else {
+            echo "skipped"
+          }
+        }
       }
     }
     stage("Code Build ${version}") {
-      nvm.runSh "npm run build", params.NODE_VERSION
+      steps {
+        nvm.runSh "npm run build", params.NODE_VERSION
+      }
     }
   }
   post {
