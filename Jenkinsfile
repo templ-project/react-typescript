@@ -5,7 +5,7 @@ def generateStages(String version, String cwd) {
     node {
       stage("Code Analysis ${version}") {
         dir cwd
-        nvm.runSh "la -la", version
+        nvm.runSh "pwd; ls -la", version
       }
       stage("Build 2 ${version}") {
         echo 'test'
