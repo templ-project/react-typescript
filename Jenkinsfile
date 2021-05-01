@@ -50,19 +50,23 @@ pipeline {
     }
 
 
-    stage('Init') {
+    // stage('Init') {
+    //   steps {
+    //     script {
+    //       def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+    //         ["${it}" : generateStages(it)]
+    //       }
+    //     }
+    //   }
+    // }
+
+    stage('Code ...') {
       steps {
         script {
           def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
             ["${it}" : generateStages(it)]
           }
-        }
-      }
-    }
 
-    stage('Code ...') {
-      steps {
-        script {
           parallel parallelStagesMap
         }
       }
