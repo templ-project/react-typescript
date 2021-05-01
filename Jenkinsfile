@@ -9,9 +9,19 @@ def generateStages(String version) {
   //   }
   // }
 
+  // return {
+  //   stage("Build ${version}") {
+  //     echo 'test'
+  //   }
+  // }
+
   return {
     stage("Build ${version}") {
-      echo 'test'
+      stages {
+        stage('test') {
+          echo 'test'
+        }
+      }
     }
   }
 }
