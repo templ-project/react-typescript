@@ -4,7 +4,7 @@ def generateStages(String version) {
   return {
     node {
       stage("Code Analysis ${version}") {
-        nvm.runSh "pwd", version
+        nvm.runSh "la -la", version
       }
       stage("Build 2 ${version}") {
         echo 'test'
@@ -52,7 +52,7 @@ pipeline {
     stage('Init') {
       steps {
         script {
-          nvm.runSh 'npm i', env.NODE_VERSION_DEFAULT
+          nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
         }
       }
     }
