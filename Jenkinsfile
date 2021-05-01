@@ -6,12 +6,7 @@ def generateNvmInstall(version) {
       stage("Code Analysis (${version}.x)") {
         steps {
           script {
-            sh """
-              . ~/.bashrc > /dev/null;
-              set -ex;
-              nvm use ${version};
-              npm run ca;
-              """
+            nvm.runSh "npm run ca;", version
           }
         }
       }
@@ -26,7 +21,6 @@ pipeline {
   }
 
   environment {
-    NVM_DIR = "${HOME}/.nvm"
     NODE_VERSIONS = "10 12 13 14 15 16"
     NODE_VERSION_DEFAULT = "14"
   }
@@ -40,36 +34,18 @@ pipeline {
       }
     }
 
-    // stage('Init') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc > /dev/null;
-    //         set -ex;
-    //         rm -rf ~/.nvm/versions/node/*
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm install \$version; \\
-    //         done
+    stage('Code ...') {
+      steps {
+        script {
+          def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+            ["${it}" : generateStage(it)]
+          }
 
-    //         nvm use ${env.NODE_VERSION_DEFAULT}
-    //         npm i;
-    //         """
-    //     }
-    //   }
-    // }
-
-    // stage('Code ...') {
-    //   steps {
-    //     script {
-    //       def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-    //         ["${it}" : generateStage(it)]
-    //       }
-
-    //       // executeTests(NODE_VERSIONS)
-    //       parallel generateNvmInstall
-    //     }
-    //   }
-    // }
+          // executeTests(NODE_VERSIONS)
+          parallel generateNvmInstall
+        }
+      }
+    }
 
     // stage('Code Analysis') {
     //   steps {
