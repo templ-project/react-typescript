@@ -6,7 +6,8 @@ def generateStages(version) {
       stage("Code Analysis (${version}.x)") {
         steps {
           script {
-            nvm.runSh "npm run ca;", version
+            echo "npm run ca; ${version}"
+            // nvm.runSh "npm run ca;", version
           }
         }
       }
