@@ -1,9 +1,10 @@
 @Library('my-jenkins-shared') _
 
-def generateStages(String version) {
+def generateStages(String version, String cwd) {
   return {
     node {
       stage("Code Analysis ${version}") {
+        dir cwd
         nvm.runSh "la -la", version
       }
       stage("Build 2 ${version}") {
@@ -38,6 +39,7 @@ pipeline {
   environment {
     NODE_VERSIONS = "10 12 13 14 15 16"
     NODE_VERSION_DEFAULT = "14"
+    PARALLEL_WORKSPACE = ''
   }
 
   stages {
@@ -53,6 +55,8 @@ pipeline {
       steps {
         script {
           nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
+
+          env.PARALLEL_WORKSPACE = env.WORKSPACE
         }
       }
     }
@@ -61,7 +65,7 @@ pipeline {
       steps {
         script {
           def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${it}" : generateStages(it)]
+            ["${it}" : generateStages(it, env.PARALLEL_WORKSPACE)]
           }
 
           parallel parallelStagesMap
