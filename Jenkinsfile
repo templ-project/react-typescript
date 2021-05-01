@@ -50,7 +50,13 @@ pipeline {
           }
 
           // executeTests(NODE_VERSIONS)
-          parallel parallelStagesMap
+          parallel {
+            stage('Test On Windows') {
+              steps {
+                echo "test"
+              }
+            }
+          }
         }
       }
     }
