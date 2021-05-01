@@ -1,6 +1,6 @@
 @Library('my-jenkins-shared') _
 
-def generateNvmInstall(version) {
+def generateStages(version) {
   return {
     node {
       stage("Code Analysis (${version}.x)") {
@@ -38,11 +38,11 @@ pipeline {
       steps {
         script {
           def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${it}" : generateStage(it)]
+            ["${it}" : generateStages(it)]
           }
 
           // executeTests(NODE_VERSIONS)
-          parallel generateNvmInstall
+          parallel parallelStagesMap
         }
       }
     }
