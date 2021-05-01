@@ -32,7 +32,7 @@ pipeline {
 
     stage('Code') {
       steps {
-        executeTests()
+        executeTests(NODE_VERSIONS)
       }
     }
 
@@ -144,34 +144,37 @@ pipeline {
   }
 }
 
-void executeTests() {
-  stage('Clear nvm') {
-    steps {
-      script {
-        sh """
-          set -ex;
-          rm -rf ~/.nvm/versions/node/* ;
-          """
+void executeTests(String nodeVersions) {
+  script {
+    stage('Clear nvm') {
+      steps {
+        echo 'Clear nvm'
+        // script {
+        //   sh """
+        //     set -ex;
+        //     rm -rf ~/.nvm/versions/node/* ;
+        //     """
+        // }
       }
     }
   }
 
-  env.NODE_VERSIONS.split(' ').each { version ->
-    stageInitName = "Init v${version}.x"
+  // env.NODE_VERSIONS.split(' ').each { version ->
+  //   stageInitName = "Init v${version}.x"
 
-    script {
-      stage(stageInitName) {
-        steps {
-          script {
-            sh """
-              set +x;
-              nvm --version || . ~/.bashrc;
-              set -ex;
-              nvm install ${version};
-              """
-          }
-        }
-      }
-    }
-  }
+  //   script {
+  //     stage(stageInitName) {
+  //       steps {
+  //         script {
+  //           sh """
+  //             set +x;
+  //             nvm --version || . ~/.bashrc;
+  //             set -ex;
+  //             nvm install ${version};
+  //             """
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 }
