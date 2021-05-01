@@ -32,7 +32,8 @@ pipeline {
 
     stage('Code') {
       steps {
-        executeTests(NODE_VERSIONS)
+        // executeTests(NODE_VERSIONS)
+        parallel parallelStagesMap
       }
     }
 
@@ -144,37 +145,47 @@ pipeline {
   }
 }
 
-void executeTests(String nodeVersions) {
-  stages {
-    stage('Clear nvm') {
-      steps {
-        echo 'Clear nvm'
-        // script {
-        //   sh """
-        //     set -ex;
-        //     rm -rf ~/.nvm/versions/node/* ;
-        //     """
-        // }
-      }
-    }
+def generateStage(version) {
+  return stage("Init ${version}") {
+    echo 'test'
   }
-
-  // env.NODE_VERSIONS.split(' ').each { version ->
-  //   stageInitName = "Init v${version}.x"
-
-  //   script {
-  //     stage(stageInitName) {
-  //       steps {
-  //         script {
-  //           sh """
-  //             set +x;
-  //             nvm --version || . ~/.bashrc;
-  //             set -ex;
-  //             nvm install ${version};
-  //             """
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 }
+
+def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+  ["${id}" : generateStage(it)]
+}
+
+// void executeTests(String nodeVersions) {
+//   stages {
+//     stage('Clear nvm') {
+//       steps {
+//         echo 'Clear nvm'
+//         // script {
+//         //   sh """
+//         //     set -ex;
+//         //     rm -rf ~/.nvm/versions/node/* ;
+//         //     """
+//         // }
+//       }
+//     }
+//   }
+
+//   // env.NODE_VERSIONS.split(' ').each { version ->
+//   //   stageInitName = "Init v${version}.x"
+
+//   //   script {
+//   //     stage(stageInitName) {
+//   //       steps {
+//   //         script {
+//   //           sh """
+//   //             set +x;
+//   //             nvm --version || . ~/.bashrc;
+//   //             set -ex;
+//   //             nvm install ${version};
+//   //             """
+//   //         }
+//   //       }
+//   //     }
+//   //   }
+//   // }
+// }
