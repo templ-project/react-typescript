@@ -8,11 +8,9 @@ def generateStages(String version) {
   //   }
   // }
   return {
-    node {
-      stages {
-        stage("Build ${version}") {
-          echo 'test'
-        }
+    stages {
+      stage("Build ${version}") {
+        echo 'test'
       }
     }
   }
