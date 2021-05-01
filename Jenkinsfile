@@ -52,7 +52,9 @@ pipeline {
 
     stage('Init') {
       steps {
-        nvm.runSh('npm init', env.NODE_VERSION_DEFAULT)
+        script {
+          nvm.runSh('npm init', env.NODE_VERSION_DEFAULT)
+        }
       }
     }
 
