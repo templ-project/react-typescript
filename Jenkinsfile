@@ -28,94 +28,35 @@ pipeline {
     //   }
     // }
 
+    // stage('Code ...') {
+    //   steps {
+    //     script {
+    //       echo "freaking workspace: ${env.WORKSPACE}"
+
+    //       def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.WORKSPACE)
+
+    //       parallel parallelStagesMap
+    //     }
+    //   }
+    // }
+
     stage('Code ...') {
       steps {
-        script {
-          echo "freaking workspace: ${env.WORKSPACE}"
-
-          def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.WORKSPACE)
-
-          parallel parallelStagesMap
+        stages {
+          env.NODE_VERSIONS.split(' ').collect {
+            stage("Build ${it}") {
+              agent any
+              steps {
+                echo "Hello from ${it}.x"
+                sh "pwd; ls -la"
+              }
+            }
+          }
         }
       }
     }
 
-    // stage('Code Analysis') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc > /dev/null;
-    //         set -ex;
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm use \$version; \\
-    //           npm i; \\
-    //           npm run ca; \\
-    //         done
-    //         """
-    //     }
-    //   }
-    // }
 
-    // stage('Code UnitTests') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc > /dev/null;
-    //         set -ex;
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm use \$version; \\
-    //           npm run test; \\
-    //         done
-    //         """
-    //     }
-    //   }
-    // }
-
-    // // stage('Code Build') {
-    // //   steps {
-    // //     script {
-    // //       sh """
-    // //         . ~/.bashrc > /dev/null;
-    // //         set -ex;
-    // //         for version in ${NODE_VERSIONS}; do \\
-    // //           nvm use \$version; \\
-    // //           npm run build; \\
-    // //         done
-    // //         """
-    // //     }
-    // //   }
-    // // }
-
-    // stage('Code Docs') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc > /dev/null;
-    //         set -ex;
-    //         nvm use ${NODE_VERSION_DEFAULT}; \\
-    //         npm run docs;
-    //         """
-    //     }
-    //   }
-    // }
-
-    // // stage('SonarCloud ') {
-    // //   steps {
-    // //     script {
-    // //       withCredentials([
-    // //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-    // //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-    // //       ]) {
-    // //         sh """
-    // //           . ~/.bashrc > /dev/null;
-    // //           set -ex;
-    // //           nvm use ${NODE_VERSION_DEFAULT}; \\
-    // //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-    // //           """
-    // //       }
-    // //     }
-    // //   }
-    // // }
   }
   post {
     // https://www.jenkins.io/doc/pipeline/tour/post/
@@ -132,6 +73,11 @@ pipeline {
     }
   }
 }
+
+/**
+ * @link https://gist.github.com/richid/d498346030275ae1790618039d8965c0
+ * @link https://issues.jenkins.io/browse/JENKINS-58236
+ */
 
 def generateStages(String version, String wksp) {
   // return {
