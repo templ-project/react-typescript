@@ -1,10 +1,10 @@
 @Library('my-jenkins-shared') _
 
-def generateStages(String version, String cwd) {
+def generateStages(String version, String wksp) {
   return {
     node {
       stage("Code Analysis ${version}") {
-        echo "prev workspace: ${cwd}"
+        echo "prev workspace: ${wksp}"
         nvm.runSh "pwd; ls -la", version
       }
       stage("Build 2 ${version}") {
@@ -56,7 +56,7 @@ pipeline {
         script {
           // nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
 
-          echo "freaking workspace: ${pwd()}"
+          echo "freaking workspace: ${env.WORKSPACE}"
           env.PARALLEL_WORKSPACE = env.WORKSPACE
         }
       }
