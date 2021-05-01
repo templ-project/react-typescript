@@ -33,11 +33,6 @@ pipeline {
     stage('Info') {
       steps {
         echo "NVM lies in ${NVM_DIR}"
-
-        script {
-          telegramSend(message: 'Hello World', chatId: 608276470)
-        }
-
         sh """
           set +x; . ~/.bashrc; set -ex;
           nvm --version;
