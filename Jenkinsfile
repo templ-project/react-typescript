@@ -7,7 +7,7 @@ def generateNvmInstall(version) {
         script {
           sh """
             set +x;
-            nvm --version || . ~/.bashrc;
+            . ~/.bashrc;
             set -ex;
             nvm install ${version};
             """
@@ -39,9 +39,7 @@ pipeline {
         }
 
         sh """
-          set +x;
-          nvm --version || . ~/.bashrc;
-          set -ex;
+          set +x; . ~/.bashrc; set -ex;
           nvm --version;
           """
       }
@@ -73,7 +71,7 @@ pipeline {
     //     script {
     //       sh """
     //         set +x;
-    //         nvm --version || . ~/.bashrc;
+    //         . ~/.bashrc;
     //         set -ex;
     //         nvm use ${env.NODE_VERSION_DEFAULT};
     //         npm i;
@@ -86,7 +84,7 @@ pipeline {
     //   steps {
     //     script {
     //       sh """
-    //         nvm --version || . ~/.bashrc;
+    //         . ~/.bashrc;
     //         set -ex;
     //         rm -rf ~/.nvm/versions/node/*
     //         for version in ${NODE_VERSIONS}; do \\
@@ -101,7 +99,7 @@ pipeline {
     //   steps {
     //     script {
     //       sh """
-    //         nvm --version || . ~/.bashrc;
+    //         . ~/.bashrc;
     //         set -ex;
     //         for version in ${NODE_VERSIONS}; do \\
     //           nvm use \$version; \\
@@ -117,7 +115,7 @@ pipeline {
     //   steps {
     //     script {
     //       sh """
-    //         nvm --version || . ~/.bashrc;
+    //         . ~/.bashrc;
     //         set -ex;
     //         for version in ${NODE_VERSIONS}; do \\
     //           nvm use \$version; \\
@@ -147,7 +145,7 @@ pipeline {
     //   steps {
     //     script {
     //       sh """
-    //         nvm --version || . ~/.bashrc;
+    //         . ~/.bashrc;
     //         set -ex;
     //         nvm use ${NODE_VERSION_DEFAULT}; \\
     //         npm run docs;
@@ -214,7 +212,7 @@ pipeline {
 //   //         script {
 //   //           sh """
 //   //             set +x;
-//   //             nvm --version || . ~/.bashrc;
+//   //             . ~/.bashrc;
 //   //             set -ex;
 //   //             nvm install ${version};
 //   //             """
