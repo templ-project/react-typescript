@@ -11,7 +11,7 @@ def generateStage(version) {
     node {
       stage("Init ${version}") {
         script {
-          sh """
+          echo """
             ${nvmInit}
             nvm install ${version};
             """
