@@ -41,13 +41,11 @@ pipeline {
     // }
 
     stage('Code ...') {
-      parallel {
-        env.NODE_VERSION_DEFAULT.split(' ').collect {
-          stage("Node.js ${it}.x") {
-            steps {
-              echo "test with ${it}.x"
-              sh "pwd; ls -la"
-            }
+      parallel env.NODE_VERSION_DEFAULT.split(' ').collect {
+        stage("Node.js ${it}.x") {
+          steps {
+            echo "test with ${it}.x"
+            sh "pwd; ls -la"
           }
         }
       }
