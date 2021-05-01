@@ -1,13 +1,16 @@
 @Library('my-jenkins-shared') _
 
 def generateStages(String version) {
-  // return {
-  //   node {
-  //     stage("Build ${version}") {
-  //       echo 'test'
-  //     }
-  //   }
-  // }
+  return {
+    node {
+      stage("Build ${version}") {
+        echo 'test'
+      }
+      stage("Build 2 ${version}") {
+        echo 'test'
+      }
+    }
+  }
 
   // return {
   //   stage("Build ${version}") {
@@ -15,15 +18,15 @@ def generateStages(String version) {
   //   }
   // }
 
-  return {
-    stage("Build ${version}") {
-      stages {
-        stage('test') {
-          echo 'test'
-        }
-      }
-    }
-  }
+  // return {
+  //   stage("Build ${version}") {
+  //     stages {
+  //       stage('test') {
+  //         echo 'test'
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 def modules = [:]
