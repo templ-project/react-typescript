@@ -1,22 +1,5 @@
 @Library('my-jenkins-shared') _
 
-def generateNvmInstall(version) {
-  return {
-    node {
-      stage("nvm isntall ${version}.x") {
-        script {
-          sh """
-            set +x;
-            . ~/.bashrc;
-            set -ex;
-            nvm install ${version};
-            """
-        }
-      }
-    }
-  }
-}
-
 def modules = [:]
 pipeline {
   agent {
@@ -33,96 +16,62 @@ pipeline {
     stage('Info') {
       steps {
         script {
-          echo "NVM lies in ${NVM_DIR}"
           sh """
-            . ~/.bashrc;
             set -ex;
-            nvm --version;
+            . ~/.bashrc;
+
+            node --version;
+            npm --version;
             """
         }
       }
     }
 
-    stage('Clear nvm') {
+    stage('Init') {
       steps {
         script {
-          sh "rm -rf ~/.nvm/versions/node/*;"
+          sh """
+            . ~/.bashrc > /dev/null;
+            set -ex;
+            rm -rf ~/.nvm/versions/node/*
+            for version in ${NODE_VERSIONS}; do \\
+              nvm install \$version; \\
+            done
+            """
         }
       }
     }
 
-    stage('Init nvm') {
+    stage('Code Analysis') {
       steps {
         script {
-          def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${it}" : generateStage(it)]
-          }
-
-          // executeTests(NODE_VERSIONS)
-          parallel generateNvmInstall
+          sh """
+            . ~/.bashrc > /dev/null;
+            set -ex;
+            for version in ${NODE_VERSIONS}; do \\
+              nvm use \$version; \\
+              npm i; \\
+              npm run ca; \\
+            done
+            """
         }
       }
     }
 
-    // stage('Npm install') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         set +x;
-    //         . ~/.bashrc;
-    //         set -ex;
-    //         nvm use ${env.NODE_VERSION_DEFAULT};
-    //         npm i;
-    //         """
-    //     }
-    //   }
-    // }
-
-    // stage('Init') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc;
-    //         set -ex;
-    //         rm -rf ~/.nvm/versions/node/*
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm install \$version; \\
-    //         done
-    //         """
-    //     }
-    //   }
-    // }
-
-    // stage('Code Analysis') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc;
-    //         set -ex;
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm use \$version; \\
-    //           npm i; \\
-    //           npm run ca; \\
-    //         done
-    //         """
-    //     }
-    //   }
-    // }
-
-    // stage('Code UnitTests') {
-    //   steps {
-    //     script {
-    //       sh """
-    //         . ~/.bashrc;
-    //         set -ex;
-    //         for version in ${NODE_VERSIONS}; do \\
-    //           nvm use \$version; \\
-    //           npm run test; \\
-    //         done
-    //         """
-    //     }
-    //   }
-    // }
+    stage('Code UnitTests') {
+      steps {
+        script {
+          sh """
+            . ~/.bashrc > /dev/null;
+            set -ex;
+            for version in ${NODE_VERSIONS}; do \\
+              nvm use \$version; \\
+              npm run test; \\
+            done
+            """
+        }
+      }
+    }
 
     // stage('Code Build') {
     //   steps {
@@ -139,36 +88,36 @@ pipeline {
     //   }
     // }
 
-    // stage('Code Docs') {
+    stage('Code Docs') {
+      steps {
+        script {
+          sh """
+            . ~/.bashrc > /dev/null;
+            set -ex;
+            nvm use ${NODE_VERSION_DEFAULT}; \\
+            npm run docs;
+            """
+        }
+      }
+    }
+
+    // stage('SonarCloud ') {
     //   steps {
     //     script {
-    //       sh """
-    //         . ~/.bashrc;
-    //         set -ex;
-    //         nvm use ${NODE_VERSION_DEFAULT}; \\
-    //         npm run docs;
-    //         """
+    //       withCredentials([
+    //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+    //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+    //       ]) {
+    //         sh """
+    //           . ~/.bashrc > /dev/null;
+    //           set -ex;
+    //           nvm use ${NODE_VERSION_DEFAULT}; \\
+    //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+    //           """
+    //       }
     //     }
     //   }
     // }
-
-    // // stage('SonarCloud ') {
-    // //   steps {
-    // //     script {
-    // //       withCredentials([
-    // //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-    // //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-    // //       ]) {
-    // //         sh """
-    // //           . ~/.bashrc > /dev/null 2>&1;
-    // //           set -ex;
-    // //           nvm use ${NODE_VERSION_DEFAULT}; \\
-    // //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-    // //           """
-    // //       }
-    // //     }
-    // //   }
-    // // }
   }
   post {
     // https://www.jenkins.io/doc/pipeline/tour/post/
@@ -185,38 +134,3 @@ pipeline {
     }
   }
 }
-
-// void executeTests(String nodeVersions) {
-//   stages {
-//     stage('Clear nvm') {
-//       steps {
-//         echo 'Clear nvm'
-//         // script {
-//         //   sh """
-//         //     set -ex;
-//         //     rm -rf ~/.nvm/versions/node/* ;
-//         //     """
-//         // }
-//       }
-//     }
-//   }
-
-//   // env.NODE_VERSIONS.split(' ').each { version ->
-//   //   stageInitName = "Init v${version}.x"
-
-//   //   script {
-//   //     stage(stageInitName) {
-//   //       steps {
-//   //         script {
-//   //           sh """
-//   //             set +x;
-//   //             . ~/.bashrc;
-//   //             set -ex;
-//   //             nvm install ${version};
-//   //             """
-//   //         }
-//   //       }
-//   //     }
-//   //   }
-//   // }
-// }
