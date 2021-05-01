@@ -43,27 +43,27 @@ pipeline {
         }
       }
     }
-    stage("Code Sonar") {
-      steps {
-        when {
-          anyOf {
-            env.RUN_SONAR_SCANNER 1
-          }
-        }
-        script {
-          if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
-            withCredentials([
-              string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-              string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-            ]) {
-              nvm.runSh "npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN}", params.NODE_VERSION
-            }
-          } else {
-            echo "skip"
-          }
-        }
-      }
-    }
+    // stage("Code Sonar") {
+    //   steps {
+    //     when {
+    //       anyOf {
+    //         env.RUN_SONAR_SCANNER 1
+    //       }
+    //     }
+    //     script {
+    //       if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
+    //         withCredentials([
+    //           string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+    //           string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+    //         ]) {
+    //           nvm.runSh "npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN}", params.NODE_VERSION
+    //         }
+    //       } else {
+    //         echo "skip"
+    //       }
+    //     }
+    //   }
+    // }
     stage("Code UnitTest") {
       steps {
         nvm.runSh "npm run test", params.NODE_VERSION
