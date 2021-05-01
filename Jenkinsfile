@@ -7,13 +7,13 @@ def generateStages(String version) {
   //     // nvm.runSh "npm run ca;", version
   //   }
   // }
-  return stage ("Node.js ${version}.x") {
+  return {stage ("Node.js ${version}.x") {
     steps {
       script {
         echo "test"
       }
     }
-  }
+  }}
   // {
   //   node {
   //     stage("Node.js ${version}.x") {
