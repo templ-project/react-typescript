@@ -6,9 +6,32 @@ def generateStages(String version, String wksp) {
       stage("Code Analysis ${version}") {
         nvm.runSh "cd ${wksp}; npm run ca", version
       }
-      stage("Build 2 ${version}") {
-        echo 'test'
+      stage("Code UnitTests ${version}") {
+        nvm.runSh "cd ${wksp}; npm run test", version
       }
+      stage("Code Build ${version}") {
+        nvm.runSh "cd ${wksp}; npm run build", version
+      }
+      if (version == '14') {
+        stage("Code Docs ${version}") {
+          nvm.runSh "cd ${wksp}; npm run docs", version
+        }
+      }
+      // stage("Code Sonar ${version}") {
+      //   if (version == '14') {
+      //     withCredentials([
+      //       string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+      //       string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+      //     ]) {
+      //       sh """
+      //         . ~/.bashrc > /dev/null;
+      //         set -ex;
+      //         nvm use ${NODE_VERSION_DEFAULT}; \\
+      //         npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+      //         """
+      //     }
+      //   }
+      // }
     }
   }
 
@@ -58,7 +81,7 @@ pipeline {
     stage('Init') {
       steps {
         script {
-          nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
+          nvm.runSh 'npm i', env.NODE_VERSION_DEFAULT
         }
       }
     }
