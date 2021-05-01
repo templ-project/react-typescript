@@ -145,7 +145,7 @@ pipeline {
 }
 
 void executeTests(String nodeVersions) {
-  script {
+  stages {
     stage('Clear nvm') {
       steps {
         echo 'Clear nvm'
