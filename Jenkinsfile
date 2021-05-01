@@ -40,7 +40,7 @@ pipeline {
 
         sh """
           set +x;
-          . ~/.bashrc;
+          nvm --version || . ~/.bashrc;
           set -ex;
           nvm --version;
           """
@@ -68,19 +68,19 @@ pipeline {
       }
     }
 
-    stage('Npm install') {
-      steps {
-        script {
-          sh """
-            set +x;
-            nvm --version || . ~/.bashrc;
-            set -ex;
-            nvm use ${env.NODE_VERSION_DEFAULT};
-            npm i;
-            """
-        }
-      }
-    }
+    // stage('Npm install') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         set +x;
+    //         nvm --version || . ~/.bashrc;
+    //         set -ex;
+    //         nvm use ${env.NODE_VERSION_DEFAULT};
+    //         npm i;
+    //         """
+    //     }
+    //   }
+    // }
 
     // stage('Init') {
     //   steps {
