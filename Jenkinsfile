@@ -41,14 +41,22 @@ pipeline {
     // }
 
     stage('Code ...') {
-      parallel {
-        stage("Node.js 14.x") {
+      parallel env.NODE_VERSIONS.split(' ').collectEntries {
+        ["node-${it}" : stage("Node.js 14.x") {
           steps {
             echo "test with 14.x"
             sh "pwd; ls -la"
           }
-        }
+        }]
       }
+      // parallel {
+      //   stage("Node.js 14.x") {
+      //     steps {
+      //       echo "test with 14.x"
+      //       sh "pwd; ls -la"
+      //     }
+      //   }
+      // }
     }
 
 
