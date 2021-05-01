@@ -32,8 +32,10 @@ pipeline {
 
     stage('Code') {
       steps {
-        // executeTests(NODE_VERSIONS)
-        parallel parallelStagesMap
+        script {
+          // executeTests(NODE_VERSIONS)
+          parallel parallelStagesMap()
+        }
       }
     }
 
@@ -146,8 +148,14 @@ pipeline {
 }
 
 def generateStage(version) {
-  return stage("Init ${version}") {
-    echo 'test'
+  return {
+    node {
+      stage("Init ${version}") {
+        script {
+          echo 'test'
+        }
+      }
+    }
   }
 }
 
