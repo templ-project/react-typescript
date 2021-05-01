@@ -4,7 +4,8 @@ def generateStages(String version, String cwd) {
   return {
     node {
       stage("Code Analysis ${version}") {
-        ws(cwd)
+        echo cwd
+        // ws(cwd)
         nvm.runSh "pwd; ls -la", version
       }
       stage("Build 2 ${version}") {
@@ -54,7 +55,7 @@ pipeline {
     stage('Init') {
       steps {
         script {
-          nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
+          // nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
 
           env.PARALLEL_WORKSPACE = env.WORKSPACE
         }
