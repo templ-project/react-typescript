@@ -3,10 +3,7 @@
 def generateStages(String version, String wksp) {
   return {
     node {
-      agent {
-        label: 'master'
-        customWorkspace: "${wksp}_${version}"
-      }
+      customWorkspace: "${wksp}_${version}"
       stage("Code Analysis ${version}") {
         // echo "prev workspace: ${wksp}"
         nvm.runSh "pwd; ls -la", version
