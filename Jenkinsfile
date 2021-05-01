@@ -1,5 +1,21 @@
 @Library('my-jenkins-shared') _
 
+def generateStage(version) {
+  return {
+    node {
+      stage("Init ${version}") {
+        script {
+          echo 'test'
+        }
+      }
+    }
+  }
+}
+
+def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+  ["${id}" : generateStage(it)]
+}
+
 def modules = [:]
 pipeline {
   agent {
@@ -34,7 +50,7 @@ pipeline {
       steps {
         script {
           // executeTests(NODE_VERSIONS)
-          parallel parallelStagesMap()
+          parallel parallelStagesMap
         }
       }
     }
@@ -145,22 +161,6 @@ pipeline {
       }
     }
   }
-}
-
-def generateStage(version) {
-  return {
-    node {
-      stage("Init ${version}") {
-        script {
-          echo 'test'
-        }
-      }
-    }
-  }
-}
-
-def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-  ["${id}" : generateStage(it)]
 }
 
 // void executeTests(String nodeVersions) {
