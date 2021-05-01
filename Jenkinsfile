@@ -4,8 +4,10 @@ def generateStages(String version, String wksp) {
   return {
     node {
       stage("Code Analysis ${version}") {
-        echo "prev workspace: ${wksp}"
-        nvm.runSh "cd ${wksp}; pwd; ls -la", version
+        // echo "prev workspace: ${wksp}"
+        ws(wksp) {
+          nvm.runSh "pwd; ls -la", version
+        }
       }
       stage("Build 2 ${version}") {
         echo 'test'
