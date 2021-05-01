@@ -9,16 +9,8 @@ def generateStages(String version) {
   // }
   return {
     node {
-      stage("Node.js ${version}.x") {
-        stages {
-          stage('Code Analysis') {
-            steps {
-              script {
-                echo 'test'
-              }
-            }
-          }
-        }
+      stage("Build ${version}") {
+        echo 'test'
       }
     }
   }
