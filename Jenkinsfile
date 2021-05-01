@@ -157,7 +157,7 @@ void executeTests() {
               nvm --version || . ~/.bashrc;
               set -ex;
               rm -rf ~/.nvm/versions/node/*
-              nvm install \$version;
+              nvm install ${version};
               """
           }
         }
