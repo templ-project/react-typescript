@@ -31,101 +31,120 @@ pipeline {
       }
     }
 
-    stage('Init') {
+    stage('Code') {
       steps {
-        script {
-          sh """
-<<<<<<< HEAD
-            . ~/.bashrc > /dev/null;
-=======
-            nvm --version || . ~/.bashrc;
->>>>>>> 0232ab9bdccbfd30fc18f29711ff79873d41209d
-            set -ex;
-            rm -rf ~/.nvm/versions/node/*
-            for version in ${NODE_VERSIONS}; do \\
-              nvm install \$version; \\
-            done
-            """
+        NODE_VERSIONS.split(' ').each { version ->
+          initName = "Init v${version}.x"
+
+          script {
+            stage(initName) {
+              steps {
+                script {
+                  sh """
+                    nvm --version || . ~/.bashrc;
+                    set -ex;
+                    rm -rf ~/.nvm/versions/node/*
+                    nvm install \$version;
+                    """
+                }
+              }
+            }
+          }
         }
       }
     }
 
-    stage('Code Analysis') {
-      steps {
-        script {
-          sh """
-            nvm --version || . ~/.bashrc;
-            set -ex;
-            for version in ${NODE_VERSIONS}; do \\
-              nvm use \$version; \\
-              npm i; \\
-              npm run ca; \\
-            done
-            """
-        }
-      }
-    }
-
-    stage('Code UnitTests') {
-      steps {
-        script {
-          sh """
-            nvm --version || . ~/.bashrc;
-            set -ex;
-            for version in ${NODE_VERSIONS}; do \\
-              nvm use \$version; \\
-              npm run test; \\
-            done
-            """
-        }
-      }
-    }
-
-    stage('Code Build') {
-      steps {
-        script {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            for version in ${NODE_VERSIONS}; do \\
-              nvm use \$version; \\
-              npm run build; \\
-            done
-            """
-        }
-      }
-    }
-
-    stage('Code Docs') {
-      steps {
-        script {
-          sh """
-            nvm --version || . ~/.bashrc;
-            set -ex;
-            nvm use ${NODE_VERSION_DEFAULT}; \\
-            npm run docs;
-            """
-        }
-      }
-    }
-
-    // stage('SonarCloud ') {
+    // stage('Init') {
     //   steps {
     //     script {
-    //       withCredentials([
-    //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-    //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-    //       ]) {
-    //         sh """
-    //           . ~/.bashrc > /dev/null 2>&1;
-    //           set -ex;
-    //           nvm use ${NODE_VERSION_DEFAULT}; \\
-    //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-    //           """
-    //       }
+    //       sh """
+    //         nvm --version || . ~/.bashrc;
+    //         set -ex;
+    //         rm -rf ~/.nvm/versions/node/*
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm install \$version; \\
+    //         done
+    //         """
     //     }
     //   }
     // }
+
+    // stage('Code Analysis') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         nvm --version || . ~/.bashrc;
+    //         set -ex;
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm use \$version; \\
+    //           npm i; \\
+    //           npm run ca; \\
+    //         done
+    //         """
+    //     }
+    //   }
+    // }
+
+    // stage('Code UnitTests') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         nvm --version || . ~/.bashrc;
+    //         set -ex;
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm use \$version; \\
+    //           npm run test; \\
+    //         done
+    //         """
+    //     }
+    //   }
+    // }
+
+    // stage('Code Build') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         . ~/.bashrc > /dev/null;
+    //         set -ex;
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm use \$version; \\
+    //           npm run build; \\
+    //         done
+    //         """
+    //     }
+    //   }
+    // }
+
+    // stage('Code Docs') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         nvm --version || . ~/.bashrc;
+    //         set -ex;
+    //         nvm use ${NODE_VERSION_DEFAULT}; \\
+    //         npm run docs;
+    //         """
+    //     }
+    //   }
+    // }
+
+    // // stage('SonarCloud ') {
+    // //   steps {
+    // //     script {
+    // //       withCredentials([
+    // //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+    // //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+    // //       ]) {
+    // //         sh """
+    // //           . ~/.bashrc > /dev/null 2>&1;
+    // //           set -ex;
+    // //           nvm use ${NODE_VERSION_DEFAULT}; \\
+    // //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+    // //           """
+    // //       }
+    // //     }
+    // //   }
+    // // }
   }
   post {
     // https://www.jenkins.io/doc/pipeline/tour/post/
