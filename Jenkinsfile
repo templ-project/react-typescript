@@ -30,6 +30,12 @@ def generateStages(String version, String wksp) {
   // }
 }
 
+def generateParallelSagesMap(String versions, String wksp) {
+  return versions.split(' ').collectEntries {
+    ["${it}" : generateStages(it, wksp)]
+  }
+}
+
 def modules = [:]
 pipeline {
   agent {
@@ -65,9 +71,7 @@ pipeline {
     stage('Code ...') {
       steps {
         script {
-          def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${it}" : generateStages(it, env.PARALLEL_WORKSPACE)]
-          }
+          def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.PARALLEL_WORKSPACE)
 
           parallel parallelStagesMap
         }
