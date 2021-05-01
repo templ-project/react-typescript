@@ -12,10 +12,6 @@ def generateStage(version) {
   }
 }
 
-def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-  ["${id}" : generateStage(it)]
-}
-
 def modules = [:]
 pipeline {
   agent {
@@ -49,6 +45,10 @@ pipeline {
     stage('Code') {
       steps {
         script {
+          def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+            ["${id}" : generateStage(it)]
+          }
+
           // executeTests(NODE_VERSIONS)
           parallel parallelStagesMap
         }
