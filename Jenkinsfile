@@ -41,7 +41,7 @@ pipeline {
     // }
 
     stage('Code ...') {
-      parallel env.NODE_VERSION_DEFAULT.split(' ').collect {
+      parallel env.NODE_VERSION.split(' ').collect {
         stage("Node.js ${it}.x") {
           steps {
             echo "test with ${it}.x"
