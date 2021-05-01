@@ -46,7 +46,7 @@ pipeline {
       steps {
         script {
           def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
-            ["${id}" : generateStage(it)]
+            ["${it}" : generateStage(it)]
           }
 
           // executeTests(NODE_VERSIONS)
