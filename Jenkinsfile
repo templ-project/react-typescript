@@ -146,6 +146,19 @@ pipeline {
 }
 
 void executeTests() {
+  script {
+    stage('Clear nvm') {
+      steps {
+        script {
+          sh """
+            set -ex;
+            rm -rf ~/.nvm/versions/node/* ;
+            """
+        }
+      }
+    }
+  }
+
   env.NODE_VERSIONS.split(' ').each { version ->
     stageInitName = "Init v${version}.x"
 
@@ -154,9 +167,9 @@ void executeTests() {
         steps {
           script {
             sh """
+              set +x;
               nvm --version || . ~/.bashrc;
               set -ex;
-              rm -rf ~/.nvm/versions/node/*
               nvm install ${version};
               """
           }
