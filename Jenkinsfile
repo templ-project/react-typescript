@@ -22,11 +22,10 @@ pipeline {
         }
 
         sh """
-          set -ex;
+          set +x;
           . ~/.bashrc;
-
-          node --version;
-          npm --version;
+          set -ex;
+          nvm --version;
           """
       }
     }
