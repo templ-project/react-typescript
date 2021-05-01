@@ -32,11 +32,13 @@ pipeline {
   stages {
     stage('Info') {
       steps {
-        echo "NVM lies in ${NVM_DIR}"
-        sh """
-          set +x; . ~/.bashrc; set -ex;
-          nvm --version;
-          """
+        script {
+          echo "NVM lies in ${NVM_DIR}"
+          sh """
+            set +x; . ~/.bashrc; set -ex;
+            nvm --version;
+            """
+        }
       }
     }
 
