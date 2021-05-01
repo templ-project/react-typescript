@@ -146,15 +146,13 @@ pipeline {
 }
 
 void executeTests() {
-  script {
-    stage('Clear nvm') {
-      steps {
-        script {
-          sh """
-            set -ex;
-            rm -rf ~/.nvm/versions/node/* ;
-            """
-        }
+  stage('Clear nvm') {
+    steps {
+      script {
+        sh """
+          set -ex;
+          rm -rf ~/.nvm/versions/node/* ;
+          """
       }
     }
   }
