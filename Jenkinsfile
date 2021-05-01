@@ -42,7 +42,7 @@ pipeline {
 
     stage('Code ...') {
       stages {
-        env.NODE_VERSIONS.split(' ').collect {
+        ("A".."F").collect {
           stage("Build ${it}") {
             agent any
             steps {
