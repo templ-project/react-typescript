@@ -33,7 +33,7 @@ pipeline {
 
     stage('Code') {
       steps {
-        NODE_VERSIONS.split(' ').each { version ->
+        env.NODE_VERSIONS.split(' ').each { version ->
           initName = "Init v${version}.x"
 
           script {
