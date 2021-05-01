@@ -41,15 +41,13 @@ pipeline {
     // }
 
     stage('Code ...') {
-      steps {
-        stages {
-          ("A".."F").collect {
-            stage("Build ${it}") {
-              agent any
-              steps {
-                echo "Hello from ${it}.x"
-                sh "pwd; ls -la"
-              }
+      stages {
+        env.NODE_VERSIONS.split(' ').collect {
+          stage("Build ${it}") {
+            agent any
+            steps {
+              echo "Hello from ${it}.x"
+              sh "pwd; ls -la"
             }
           }
         }
