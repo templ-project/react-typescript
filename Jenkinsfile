@@ -4,7 +4,7 @@ def generateStages(String version) {
   return {
     node {
       stage("Code Analysis ${version}") {
-        nvm.runSh "npm run ca", version
+        nvm.runSh "pwd", version
       }
       stage("Build 2 ${version}") {
         echo 'test'
@@ -48,7 +48,6 @@ pipeline {
         }
       }
     }
-
 
     stage('Init') {
       steps {
