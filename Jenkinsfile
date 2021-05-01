@@ -45,7 +45,6 @@ pipeline {
   environment {
     NODE_VERSIONS = "10 12 13 14 15 16"
     NODE_VERSION_DEFAULT = "14"
-    PARALLEL_WORKSPACE = ''
   }
 
   stages {
@@ -60,10 +59,7 @@ pipeline {
     stage('Init') {
       steps {
         script {
-          // nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
-
-          echo "freaking workspace: ${env.WORKSPACE}"
-          env.PARALLEL_WORKSPACE = env.WORKSPACE
+          nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
         }
       }
     }
@@ -71,7 +67,9 @@ pipeline {
     stage('Code ...') {
       steps {
         script {
-          def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.PARALLEL_WORKSPACE)
+          echo "freaking workspace: ${env.WORKSPACE}"
+
+          def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.WORKSPACE)
 
           parallel parallelStagesMap
         }
