@@ -1,5 +1,24 @@
 @Library('my-jenkins-shared') _
 
+def generateNvmInstall(version) {
+  return {
+    node {
+      stage("Code Analysis (${version}.x)") {
+        steps {
+          script {
+            sh """
+              . ~/.bashrc > /dev/null;
+              set -ex;
+              nvm use ${version};
+              npm run ca;
+              """
+          }
+        }
+      }
+    }
+  }
+}
+
 def modules = [:]
 pipeline {
   agent {
@@ -16,64 +35,43 @@ pipeline {
     stage('Info') {
       steps {
         script {
-          sh """
-            set -ex;
-            . ~/.bashrc;
-
-            node --version;
-            npm --version;
-            """
+          nvm.info()
         }
       }
     }
 
-    stage('Init') {
-      steps {
-        script {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            rm -rf ~/.nvm/versions/node/*
-            for version in ${NODE_VERSIONS}; do \\
-              nvm install \$version; \\
-            done
-            """
-        }
-      }
-    }
+    // stage('Init') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         . ~/.bashrc > /dev/null;
+    //         set -ex;
+    //         rm -rf ~/.nvm/versions/node/*
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm install \$version; \\
+    //         done
 
-    stage('Code Analysis') {
-      steps {
-        script {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            for version in ${NODE_VERSIONS}; do \\
-              nvm use \$version; \\
-              npm i; \\
-              npm run ca; \\
-            done
-            """
-        }
-      }
-    }
+    //         nvm use ${env.NODE_VERSION_DEFAULT}
+    //         npm i;
+    //         """
+    //     }
+    //   }
+    // }
 
-    stage('Code UnitTests') {
-      steps {
-        script {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            for version in ${NODE_VERSIONS}; do \\
-              nvm use \$version; \\
-              npm run test; \\
-            done
-            """
-        }
-      }
-    }
+    // stage('Code ...') {
+    //   steps {
+    //     script {
+    //       def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
+    //         ["${it}" : generateStage(it)]
+    //       }
 
-    // stage('Code Build') {
+    //       // executeTests(NODE_VERSIONS)
+    //       parallel generateNvmInstall
+    //     }
+    //   }
+    // }
+
+    // stage('Code Analysis') {
     //   steps {
     //     script {
     //       sh """
@@ -81,43 +79,74 @@ pipeline {
     //         set -ex;
     //         for version in ${NODE_VERSIONS}; do \\
     //           nvm use \$version; \\
-    //           npm run build; \\
+    //           npm i; \\
+    //           npm run ca; \\
     //         done
     //         """
     //     }
     //   }
     // }
 
-    stage('Code Docs') {
-      steps {
-        script {
-          sh """
-            . ~/.bashrc > /dev/null;
-            set -ex;
-            nvm use ${NODE_VERSION_DEFAULT}; \\
-            npm run docs;
-            """
-        }
-      }
-    }
-
-    // stage('SonarCloud ') {
+    // stage('Code UnitTests') {
     //   steps {
     //     script {
-    //       withCredentials([
-    //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-    //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-    //       ]) {
-    //         sh """
-    //           . ~/.bashrc > /dev/null;
-    //           set -ex;
-    //           nvm use ${NODE_VERSION_DEFAULT}; \\
-    //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-    //           """
-    //       }
+    //       sh """
+    //         . ~/.bashrc > /dev/null;
+    //         set -ex;
+    //         for version in ${NODE_VERSIONS}; do \\
+    //           nvm use \$version; \\
+    //           npm run test; \\
+    //         done
+    //         """
     //     }
     //   }
     // }
+
+    // // stage('Code Build') {
+    // //   steps {
+    // //     script {
+    // //       sh """
+    // //         . ~/.bashrc > /dev/null;
+    // //         set -ex;
+    // //         for version in ${NODE_VERSIONS}; do \\
+    // //           nvm use \$version; \\
+    // //           npm run build; \\
+    // //         done
+    // //         """
+    // //     }
+    // //   }
+    // // }
+
+    // stage('Code Docs') {
+    //   steps {
+    //     script {
+    //       sh """
+    //         . ~/.bashrc > /dev/null;
+    //         set -ex;
+    //         nvm use ${NODE_VERSION_DEFAULT}; \\
+    //         npm run docs;
+    //         """
+    //     }
+    //   }
+    // }
+
+    // // stage('SonarCloud ') {
+    // //   steps {
+    // //     script {
+    // //       withCredentials([
+    // //         string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+    // //         string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+    // //       ]) {
+    // //         sh """
+    // //           . ~/.bashrc > /dev/null;
+    // //           set -ex;
+    // //           nvm use ${NODE_VERSION_DEFAULT}; \\
+    // //           npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+    // //           """
+    // //       }
+    // //     }
+    // //   }
+    // // }
   }
   post {
     // https://www.jenkins.io/doc/pipeline/tour/post/
