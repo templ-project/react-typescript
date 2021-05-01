@@ -5,7 +5,7 @@ def generateStages(String version, String cwd) {
     node {
       stage("Code Analysis ${version}") {
         script {
-          echo cwd
+          echo "prev workspace: ${cwd}"
         }
         nvm.runSh "pwd; ls -la", version
       }
