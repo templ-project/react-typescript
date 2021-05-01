@@ -1,14 +1,10 @@
 @Library('my-jenkins-shared') _
 
 def generateStages(String version) {
-  return {
-    node {
-      stage("Code Analysis (${version}.x)") {
-        steps {
-          echo "npm run ca; ${version}"
-          // nvm.runSh "npm run ca;", version
-        }
-      }
+  return stage("Code Analysis (${version}.x)") {
+    steps {
+      echo "npm run ca; ${version}"
+      // nvm.runSh "npm run ca;", version
     }
   }
 }
