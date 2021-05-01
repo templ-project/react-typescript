@@ -56,7 +56,7 @@ pipeline {
         script {
           // nvm.runSh 'pwd; ls -la; npm i', env.NODE_VERSION_DEFAULT
 
-          echo "freaking workspace: ${WORKSPACE}"
+          echo "freaking workspace: ${pwd()}"
           env.PARALLEL_WORKSPACE = env.WORKSPACE
         }
       }
