@@ -1,19 +1,14 @@
 @Library('my-jenkins-shared') _
 
-def nvmInit = """
-set +x;
-nvm --version || . ~/.bashrc;
-set -ex;
-"""
-
-def generateStage(version) {
+def generateNvmInstall(version) {
   return {
     node {
-      stage("Init ${version}") {
+      stage("nvm isntall ${version}.x") {
         script {
-          echo 'test'
           sh """
-            ${nvmInit}
+            set +x;
+            nvm --version || . ~/.bashrc;
+            set -ex;
             nvm install ${version};
             """
         }
@@ -52,7 +47,15 @@ pipeline {
       }
     }
 
-    stage('Code') {
+    stage('Clear nvm') {
+      steps {
+        script {
+          sh "rm -rf ~/.nvm/versions/node/*;"
+        }
+      }
+    }
+
+    stage('Init nvm') {
       steps {
         script {
           def parallelStagesMap = env.NODE_VERSIONS.split(' ').collectEntries {
@@ -60,7 +63,21 @@ pipeline {
           }
 
           // executeTests(NODE_VERSIONS)
-          parallel parallelStagesMap
+          parallel generateNvmInstall
+        }
+      }
+    }
+
+    stage('Npm install') {
+      steps {
+        script {
+          sh """
+            set +x;
+            nvm --version || . ~/.bashrc;
+            set -ex;
+            nvm use ${env.NODE_VERSION_DEFAULT};
+            npm i;
+            """
         }
       }
     }
