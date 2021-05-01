@@ -41,12 +41,11 @@ pipeline {
     // }
 
     stage('Code ...') {
-      stages {
-        ("A".."F").collect {
-          stage("Build ${it}") {
-            agent any
+      parallel {
+        env.NODE_VERSION_DEFAULT.split(' ').collect {
+          stage("Node.js ${it}.x") {
             steps {
-              echo "Hello from ${it}.x"
+              echo "test with ${it}.x"
               sh "pwd; ls -la"
             }
           }
