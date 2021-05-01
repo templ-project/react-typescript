@@ -28,39 +28,16 @@ pipeline {
     //   }
     // }
 
-    // stage('Code ...') {
-    //   steps {
-    //     script {
-    //       echo "freaking workspace: ${env.WORKSPACE}"
-
-    //       def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.WORKSPACE)
-
-    //       parallel parallelStagesMap
-    //     }
-    //   }
-    // }
-
     stage('Code ...') {
-      parallel {
-        node {
-          env.NODE_VERSIONS.split(' ').collectEntries {
-        ["node-${it}" : stage("Node.js 14.x") {
-          steps {
-            echo "test with 14.x"
-            sh "pwd; ls -la"
-          }
-        }]
-      }
+      steps {
+        script {
+          echo "freaking workspace: ${env.WORKSPACE}"
+
+          def parallelStagesMap = generateParallelSagesMap(env.NODE_VERSIONS, env.WORKSPACE)
+
+          parallel parallelStagesMap
         }
       }
-      // parallel {
-      //   stage("Node.js 14.x") {
-      //     steps {
-      //       echo "test with 14.x"
-      //       sh "pwd; ls -la"
-      //     }
-      //   }
-      // }
     }
 
 
@@ -87,39 +64,39 @@ pipeline {
  */
 
 def generateStages(String version, String wksp) {
-  // return {
-  //   node {
-  //     stage("Code Analysis ${version}") {
-  //       nvm.runSh "cd ${wksp}; npm run ca", version
-  //     }
-  //     stage("Code UnitTests ${version}") {
-  //       nvm.runSh "cd ${wksp}; npm run test", version
-  //     }
-  //     stage("Code Build ${version}") {
-  //       nvm.runSh "cd ${wksp}; npm run build", version
-  //     }
-  //     if (version == '14') {
-  //       stage("Code Docs ${version}") {
-  //         nvm.runSh "cd ${wksp}; npm run docs", version
-  //       }
-  //     }
-  //     // stage("Code Sonar ${version}") {
-  //     //   if (version == '14') {
-  //     //     withCredentials([
-  //     //       string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
-  //     //       string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
-  //     //     ]) {
-  //     //       sh """
-  //     //         . ~/.bashrc > /dev/null;
-  //     //         set -ex;
-  //     //         nvm use ${NODE_VERSION_DEFAULT}; \\
-  //     //         npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
-  //     //         """
-  //     //     }
-  //     //   }
-  //     // }
-  //   }
-  // }
+  return {
+    node {
+      stage("Code Analysis ${version}") {
+        nvm.runSh "cd ${wksp}; npm run ca", version
+      }
+      stage("Code UnitTests ${version}") {
+        nvm.runSh "cd ${wksp}; npm run test", version
+      }
+      stage("Code Build ${version}") {
+        nvm.runSh "cd ${wksp}; npm run build", version
+      }
+      if (version == '14') {
+        stage("Code Docs ${version}") {
+          nvm.runSh "cd ${wksp}; npm run docs", version
+        }
+      }
+      // stage("Code Sonar ${version}") {
+      //   if (version == '14') {
+      //     withCredentials([
+      //       string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
+      //       string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
+      //     ]) {
+      //       sh """
+      //         . ~/.bashrc > /dev/null;
+      //         set -ex;
+      //         nvm use ${NODE_VERSION_DEFAULT}; \\
+      //         npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN};
+      //         """
+      //     }
+      //   }
+      // }
+    }
+  }
 
   // return {
   //   stage("Build ${version}") {
@@ -127,11 +104,11 @@ def generateStages(String version, String wksp) {
   //   }
   // }
 
-  return stage("Build ${version}") {
-    steps {
-      echo 'test'
-    }
-  }
+  // return stage("Build ${version}") {
+  //   steps {
+  //     echo 'test'
+  //   }
+  // }
 
   // return {
   //   stage("Build ${version}") {
