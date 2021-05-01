@@ -1,11 +1,20 @@
 @Library('my-jenkins-shared') _
 
+def nvmInit = """
+  set +x;
+  nvm --version || . ~/.bashrc;
+  set -ex;
+"""
+
 def generateStage(version) {
   return {
     node {
       stage("Init ${version}") {
         script {
-          echo 'test'
+          sh """
+            ${nvmInit}
+            nvm install ${version};
+            """
         }
       }
     }
