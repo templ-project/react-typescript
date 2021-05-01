@@ -170,7 +170,9 @@ def generateStages(String version, String wksp) {
 
   return {
     stage("Build ${version}") {
-      echo 'test'
+      steps {
+        echo 'test'
+      }
     }
   }
 
