@@ -106,7 +106,7 @@ pipeline {
             ["node-${it}": {
               node {
                 stage("Node.js ${it}.x") {
-                  build job: 'Templ/job/React%20-%20Typescript', parameters: [
+                  build job: "${env.JOB_NAME}", parameters: [
                     string(name: 'NODE_VERSION', value: "${it}"),
                   ]
                 }
