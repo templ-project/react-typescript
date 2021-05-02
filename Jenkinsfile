@@ -105,7 +105,7 @@ pipeline {
           parallel env.NODE_VERSIONS.split(' ').collectEntries {
             ["node-${it}": {
               node {
-                stage("Build ${app}") {
+                stage("Node.js ${it}.x") {
                   build job: 'React - Typescript', parameters: [
                     string(name: 'NODE_VERSION', value: "${it}"),
                   ]
