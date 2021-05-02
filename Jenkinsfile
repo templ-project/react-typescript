@@ -108,7 +108,7 @@ pipeline {
                 stage("Node.js ${it}.x") {
                   build job: "${env.JOB_NAME}", parameters: [
                     string(name: 'NODE_VERSION', value: "${it}"),
-                  ]
+                  ], wait: false
                 }
               }
             }]
