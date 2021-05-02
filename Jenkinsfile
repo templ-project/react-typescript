@@ -7,7 +7,7 @@ pipeline {
   }
 
   environment {
-    // NODE_VERSIONS = "10 12 13 14 15 16"
+    NODE_VERSIONS = "10 12 13 14 15 16"
     NODE_VERSION_DEFAULT = "14"
     RUN_SONAR_SCANNER = 0
   }
@@ -23,6 +23,9 @@ pipeline {
 
   stages {
     stage('Run by Node.js Version') {
+      when {
+        expression { params.NODE_VERSION != '' }
+      }
       stages {
         stage('Info') {
           steps {
