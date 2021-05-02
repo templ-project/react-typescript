@@ -14,7 +14,7 @@ pipeline {
 
   parameters {
     string(
-      defaultValue: '14',
+      defaultValue: '',
       description: 'Node.js version to run tests for',
       name: 'NODE_VERSION',
       trim: true
@@ -92,6 +92,26 @@ pipeline {
             script {
               nvm.runSh "npm run build", params.NODE_VERSION
             }
+          }
+        }
+      }
+    }
+    stage("Run All Versions") {
+      when {
+        expression { params.NODE_VERSION == '' }
+      }
+      steps {
+        script {
+          parallel env.NODE_VERSIONS.split(' ').collectEntries {
+            ["node-${it}": {
+              node {
+                stage("Build ${app}") {
+                  build job: 'React - Typescript', parameters: [
+                    string(name: 'NODE_VERSION', value: "${it}"),
+                  ]
+                }
+              }
+            }]
           }
         }
       }
