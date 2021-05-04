@@ -80,3 +80,9 @@ package-lock.json
 # documentation
 docs
 docs.json
+
+
+# dependency-check
+.scripts/dependency-check
+.scripts/dependency-check.zip
+dependency-check-report.html
