@@ -14,7 +14,6 @@
     "doc:watch": "nodemon --exec 'yarn run doc'",
     "docs": "npx typedoc --out docs --json docs.json --readme none --theme minimal src",
     "eject": "react-scripts eject",
-    "git-hook:pre-commit": "yarn run ca && yarn run test",
     "inspector": "jsinspector server --port 9543",
     "jscpd:html": "yarn run jscpd -- --reporters html",
     "jscpd": "jscpd ./src --blame --format typescript",
