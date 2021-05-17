@@ -37,14 +37,15 @@ pipeline {
         stage('Init') {
           steps {
             script {
-              nvm.runSh 'npm i', params.NODE_VERSION
+              // nvm.runSh 'npx yarn i', params.NODE_VERSION
+              npm.install [manager:'npx yarn', useNvm: true, nodeVersion: params.NODE_VERSION]
             }
           }
         }
         stage("Code Analysis") {
           steps {
             script {
-              nvm.runSh "npm run ca", params.NODE_VERSION
+              nvm.runSh "npx yarn run ca", params.NODE_VERSION
             }
           }
         }
@@ -61,7 +62,7 @@ pipeline {
         //           string(credentialsId: 'sonar_server_host', variable: 'SONAR_HOST'),
         //           string(credentialsId: 'sonar_server_login', variable: 'SONAR_LOGIN')
         //         ]) {
-        //           nvm.runSh "npm run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN}", params.NODE_VERSION
+        //           nvm.runSh "npx yarn run sonar -- -Dsonar.host.url=${SONAR_HOST} -Dsonar.login=${SONAR_LOGIN}", params.NODE_VERSION
         //         }
         //       } else {
         //         echo "skip"
@@ -72,7 +73,7 @@ pipeline {
         stage("Code UnitTest") {
           steps {
             script {
-              nvm.runSh "npm run test", params.NODE_VERSION
+              nvm.runSh "npx yarn run test", params.NODE_VERSION
             }
           }
         }
@@ -80,7 +81,7 @@ pipeline {
           steps {
             script {
               if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
-                nvm.runSh "npm run docs", params.NODE_VERSION
+                nvm.runSh "npx yarn run docs", params.NODE_VERSION
               } else {
                 echo "skipped"
               }
@@ -90,7 +91,7 @@ pipeline {
         stage("Code Build") {
           steps {
             script {
-              nvm.runSh "npm run build", params.NODE_VERSION
+              nvm.runSh "npx yarn run build", params.NODE_VERSION
             }
           }
         }
