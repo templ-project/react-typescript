@@ -7,7 +7,10 @@ pipeline {
   }
 
   environment {
-    NODE_VERSIONS = "10 12 13 14 15 16"
+    // NODE_VERSIONS = "10 12 13 14 15 16"
+    // error dependency-cruiser@10.0.1: The engine "node" is incompatible with this module. Expected version "^12.20||^14||>=16". Got "10.24.1"
+    // error @babel/eslint-parser@7.14.2: The engine "node" is incompatible with this module. Expected version "^10.13.0 || ^12.13.0 || >=14.0.0". Got "13.14.0"
+    NODE_VERSIONS = "12 14 16"
     NODE_VERSION_DEFAULT = "14"
     RUN_SONAR_SCANNER = 0
   }
