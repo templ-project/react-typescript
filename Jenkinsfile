@@ -60,10 +60,8 @@ pipeline {
         stage("Code Sonar") {
           steps {
             when {
-              anyOf {
-                environment name: 'RUN_SONAR_SCANNER', value: '1'
-                environment name: 'RUN_SONAR_SCANNER', value: 'y'
-                environment name: 'RUN_SONAR_SCANNER', value: 'yes'
+              expression {
+                return params.RUN_SONAR_SCANNER.toLowerCase() ==~ /(1|y(es)?)/
               }
             }
             script {
