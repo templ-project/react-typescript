@@ -3,11 +3,11 @@
 def modules = [:]
 pipeline {
   agent {
-    node {
+    label {
       label 'master' // test-1
-      // customWorkspace params.NODE_VERSION
-      //   ? "${WORKSPACE}"
-      //   : "${WORKSPACE}/../${WORKSPACE.split('/')[-1]}_${params.NODE_VERSION}"
+      customWorkspace params.NODE_VERSION
+        ? "${WORKSPACE}"
+        : "${WORKSPACE}/../${WORKSPACE.split('/')[-1]}_${params.NODE_VERSION}"
     }
   }
 
