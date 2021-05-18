@@ -12,7 +12,7 @@ pipeline {
     // error @babel/eslint-parser@7.14.2: The engine "node" is incompatible with this module. Expected version "^10.13.0 || ^12.13.0 || >=14.0.0".0
     NODE_VERSIONS = "12 14 16"
     NODE_VERSION_DEFAULT = "14"
-    RUN_SONAR_SCANNER = 0
+    RUN_SONAR_SCANNER = 'no'
   }
 
   parameters {
@@ -60,7 +60,8 @@ pipeline {
         stage("Code Sonar") {
           when {
             expression {
-              return params.RUN_SONAR_SCANNER.toLowerCase() ==~ /(1|y(es)?)/
+              return env.RUN_SONAR_SCANNER &&
+                env.RUN_SONAR_SCANNER.toLowerCase() ==~ /(1|y(es)?)/
             }
           }
           steps {
