@@ -58,12 +58,12 @@ pipeline {
           }
         }
         stage("Code Sonar") {
-          steps {
-            when {
-              expression {
-                return params.RUN_SONAR_SCANNER.toLowerCase() ==~ /(1|y(es)?)/
-              }
+          when {
+            expression {
+              return params.RUN_SONAR_SCANNER.toLowerCase() ==~ /(1|y(es)?)/
             }
+          }
+          steps {
             script {
               if (params.NODE_VERSION == env.NODE_VERSION_DEFAULT) {
                 withCredentials([
