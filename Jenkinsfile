@@ -118,7 +118,7 @@ pipeline {
       }
       steps {
         script {
-          echo "${HOME}/workspace/${JOB_NAME}_node_v${NODE_VERSION.replaceAll(/[^\w]/, '_')}"
+          echo "${HOME}/workspace/${JOB_NAME.replaceAll(/[^\w]/, '_')}_node_v${NODE_VERSION}"
           // parallel env.NODE_VERSIONS.split(' ').collectEntries {
           //   ["node-${it}": {
           //     node {
