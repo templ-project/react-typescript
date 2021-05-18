@@ -17,10 +17,13 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 10.x
+          #  error dependency-cruiser@10.0.1: The engine "node" is incompatible with this module. Expected version "^12.20||^14||>=16".
+          # - 10.x
           - 12.x
+          #  error @babel/eslint-parser@7.14.2: The engine "node" is incompatible with this module. Expected version "^10.13.0 || ^12.13.0 || >=14.0.0".
+          # - 13.x
           - 14.x
-          - 15.x
+          # - 15.x
           - 16.x
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
