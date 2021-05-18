@@ -1,6 +1,6 @@
 {
   "name": "react-typescript",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "React Project Template",
   "private": true,
   "scripts": {
@@ -11,10 +11,9 @@
     "ca": "yarn run ca:lint && yarn run ca:quality && yarn run ca:security",
     "clean": "rimraf .jscpd coverage dist docs",
     "depcruise": "depcruise --config .dependency-cruiser.js src -x src/*.d.ts",
-    "doc:watch": "nodemon --exec 'yarn run doc'",
+    "docs:watch": "nodemon --exec 'yarn run doc'",
     "docs": "npx typedoc --out docs --json docs.json --readme none --theme minimal src",
     "eject": "react-scripts eject",
-    "inspector": "jsinspector server --port 9543",
     "jscpd:html": "yarn run jscpd -- --reporters html",
     "jscpd": "jscpd ./src --blame --format typescript",
     "license-check": "npx license-checker --production --json --failOn='AGPL AGPL 1.0; AGPL 3.0; CDDL or GPLv2 with exceptions; CNRI Python GPL Compatible; Eclipse 1.0; Eclipse 2.0; GPL; GPL 1.0; GPL 2.0; GPL 2.0 Autoconf; GPL 2.0 Bison; GPL 2.0 Classpath; GPL 2.0 Font; GPL 2.0 GCC; GPL 3.0; GPL 3.0 Autoconf; GPL 3.0 GCC; GPLv2 with XebiaLabs FLOSS License Exception; LGPL; LGPL 2.0; LGPL 2.1; LGPL 3.0; Suspected Eclipse 1.0; Suspected Eclipse 2.0'",
@@ -37,6 +36,16 @@
     "test:watch": "react-scripts test",
     "test": "yarn run test:watch -- --watchAll=false --coverage --runInBand --verbose"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/templ-project/react-typescript.git"
+  },
+  "author": "Dragos Cirjan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/templ-project/react-typescript/issues"
+  },
+  "homepage": "https://github.com/templ-project/react-typescript#readme",
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -94,6 +103,17 @@
     "typedoc": "^0.20.36",
     "typescript": "^4.2.4"
   },
+  "peerDependencies": {},
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -105,11 +125,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "importSort": {
-    "js, .jsx, .ts, .tsx": {
-      "parser": "typescript",
-      "style": "module"
-    }
   }
 }
