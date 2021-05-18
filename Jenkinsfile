@@ -47,6 +47,7 @@ pipeline {
             script {
               // nvm.runSh 'npx yarn i', params.NODE_VERSION
               npm.install([
+                cacheKey: "node_v${env.NODE_VERSION}",
                 manager:'npx yarn',
                 useNvm: true,
                 nodeVersion: params.NODE_VERSION
