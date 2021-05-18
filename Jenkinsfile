@@ -8,8 +8,7 @@ pipeline {
       // customWorkspace params.NODE_VERSION
       //   ? "${WORKSPACE}"
       //   : "${WORKSPACE}/../${WORKSPACE.split('/')[-1]}_${params.NODE_VERSION}"
-      customWorkspace "${HOME}/workspace/${JOB_NAME}"
-      // _node_v${NODE_VERSION}
+      // customWorkspace "${HOME}/workspace/${JOB_NAME}_node_v${NODE_VERSION}"
     }
   }
 
@@ -119,17 +118,18 @@ pipeline {
       }
       steps {
         script {
-          parallel env.NODE_VERSIONS.split(' ').collectEntries {
-            ["node-${it}": {
-              node {
-                stage("Node.js ${it}.x") {
-                  build job: "${env.JOB_NAME}", parameters: [
-                    string(name: 'NODE_VERSION', value: "${it}"),
-                  ], wait: false
-                }
-              }
-            }]
-          }
+          echo "${HOME}/workspace/${JOB_NAME}_node_v${NODE_VERSION}"
+          // parallel env.NODE_VERSIONS.split(' ').collectEntries {
+          //   ["node-${it}": {
+          //     node {
+          //       stage("Node.js ${it}.x") {
+          //         build job: "${env.JOB_NAME}", parameters: [
+          //           string(name: 'NODE_VERSION', value: "${it}"),
+          //         ], wait: false
+          //       }
+          //     }
+          //   }]
+          // }
         }
       }
     }
