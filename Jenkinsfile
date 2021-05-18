@@ -8,7 +8,7 @@ pipeline {
       // customWorkspace params.NODE_VERSION
       //   ? "${WORKSPACE}"
       //   : "${WORKSPACE}/../${WORKSPACE.split('/')[-1]}_${params.NODE_VERSION}"
-      customWorkspace "/tmp/test"
+      customWorkspace "${HOME}/workspace/${JOB_NAME}_node_v${NODE_VERSION}"
     }
   }
 
